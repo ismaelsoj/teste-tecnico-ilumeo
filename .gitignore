@@ -1,0 +1,10 @@
+/servidor
+/bin/
+/build/
+*.log
+*.out
+.vscode/
+*.swp
+.DS_Store
+vendor/
+csv/populate_historico.csv

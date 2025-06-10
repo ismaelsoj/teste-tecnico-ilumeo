@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ismael
+      POSTGRES_PASSWORD: Isma3lI1um3o
+      POSTGRES_DB: ilumeo
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+
+  csv_import:
+    image: postgres:16
+    depends_on:
+      - db
+    environment:
+      PGPASSWORD: Isma3lI1um3o
+    volumes:
+    - ./csv:/csv
+    - ./csv_import.sh:/docker-entrypoint-initdb.d/csv_import.sh
+    entrypoint: ["/docker-entrypoint-initdb.d/csv_import.sh"]
+  api:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://ismael:Isma3lI1um3o@db:5432/ilumeo?sslmode=disable
+    ports:
+      - "8080:8080"
+    command: ["./servidor"]
+
+volumes:
+  db_data:
