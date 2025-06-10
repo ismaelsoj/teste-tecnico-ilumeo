@@ -30,6 +30,7 @@ func main() {
 	historicoHandler := handlers.NewHistoricoHandler(dbpool)
 
 	http.HandleFunc("/historico", historicoHandler.HandleHistorico)
+	http.HandleFunc("/taxa-conversao", historicoHandler.HandleTaxaConversao)
 
 	port := "8080"
 	log.Printf("Servidor rodando na porta %s", port)

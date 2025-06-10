@@ -33,3 +33,17 @@ func (h *HistoricoHandler) HandleHistorico(w http.ResponseWriter, r *http.Reques
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(historicos)
 }
+
+func (h *HistoricoHandler) HandleTaxaConversao(w http.ResponseWriter, r *http.Request) {
+	ctx, cancel := context.WithTimeout(r.Context(), 30*time.Second)
+	defer cancel()
+
+	historicos, err := h.repo.GetTaxaConversaoPorCanalETempo(ctx)
+	if err != nil {
+		http.Error(w, "Erro ao buscar dados: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(historicos)
+}
