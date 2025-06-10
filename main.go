@@ -14,9 +14,10 @@ import (
 
 // Historico representa um registro da tabela
 type Historico struct {
-	ID               int64  `json:"id"`
-	Origin           string `json:"origin"`
-	ResponseStatusID int    `json:"response_status_id"`
+	ID               int64     `json:"id"`
+	Origin           string    `json:"origin"`
+	ResponseStatusID int       `json:"response_status_id"`
+	CreatedAt        time.Time `json:"created_at"`
 }
 
 func main() {
@@ -57,7 +58,7 @@ func main() {
 
 // buscarHistorico consulta todos os registros da tabela historico
 func buscarHistorico(ctx context.Context, dbpool *pgxpool.Pool) ([]Historico, error) {
-	rows, err := dbpool.Query(ctx, "SELECT id, origin, response_status_id FROM historico LIMIT 1000")
+	rows, err := dbpool.Query(ctx, "SELECT id, origin, response_status_id, created_at FROM historico LIMIT 1000")
 	if err != nil {
 		log.Printf("Erro na query: %s", err)
 		return nil, err
@@ -68,7 +69,7 @@ func buscarHistorico(ctx context.Context, dbpool *pgxpool.Pool) ([]Historico, er
 
 	for rows.Next() {
 		var h Historico
-		err := rows.Scan(&h.ID, &h.Origin, &h.ResponseStatusID)
+		err := rows.Scan(&h.ID, &h.Origin, &h.ResponseStatusID, &h.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
