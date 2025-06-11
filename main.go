@@ -43,6 +43,7 @@ func main() {
 	r.Route("/api/v1", func(r chi.Router) {
 		r.Get("/historico", historicoHandler.HandleHistorico)
 		r.Get("/taxa-conversao", historicoHandler.HandleTaxaConversao)
+		r.Get("/taxa-conversao-filtrada", historicoHandler.HandleTaxaConversaoFiltrada)
 	})
 
 	/*http.HandleFunc("/historico", historicoHandler.HandleHistorico)
